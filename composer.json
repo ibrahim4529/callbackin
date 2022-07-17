@@ -15,6 +15,13 @@
             "PhpMqtt\\Client\\": "src"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Liostech\\Callbackin\\CallbackinServiceProvider"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "ibrahim",
