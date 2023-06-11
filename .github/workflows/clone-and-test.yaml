@@ -1,0 +1,26 @@
+name: Clone And Test APP
+
+on:
+  push:
+    branches:
+      - "**" 
+
+jobs:
+  clone-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
+      - name: Setup ENV for test
+        shell: bash
+        run: 'echo "$TEST_ENV" > server/.env'
+        env:
+          TEST_ENV: ${{ secrets.TEST_ENV }}
+      - name: Bootsrapping Project
+        run: npm run bootstrap
+      - name: Test APP
+        run: npm run test
