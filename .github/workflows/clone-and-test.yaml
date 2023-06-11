@@ -21,6 +21,7 @@ jobs:
         env:
           TEST_ENV: ${{ secrets.TEST_ENV }}
       - name: Bootsrapping Project
+        shell: bash
         run: npm run bootstrap
       - name: Test APP
         run: npm run test
