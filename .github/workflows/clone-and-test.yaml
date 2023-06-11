@@ -24,4 +24,4 @@ jobs:
         shell: bash
         run: npm run bootstrap
       - name: Test APP
-        run: npm run test
+        run: npm run test:all
