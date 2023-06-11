@@ -1,0 +1,11 @@
+{
+  "name": "callbackin-server",
+  "version": "1.0.0",
+  "description": "Python server app",
+  "scripts": {
+    "dev": "uvicorn main:app --reload",
+    "test": "pytest"
+  },
+  "author": "",
+  "license": "ISC"
+}
