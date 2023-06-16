@@ -52,13 +52,13 @@ async def _handle(request: Request, path: str, session: Session ):
     }
     
     
-    if not IS_TEST:
+    if IS_TEST:
         publish_message(callback.path, json.dumps(message))
 
     session.add(callback_history)
     session.commit()
 
-    return {"body": request_body, "header": request_header}
+    return "OK"
 
 @router.get("/{path}")
 async def handle(request: Request, path: str, session: Session = Depends(get_session)):
