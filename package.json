@@ -5,7 +5,9 @@
   "scripts": {
     "bootstrap": "npm run bootstrap:server",
     "bootstrap:server": "cd server && pip install -r requirements.txt",
+    "bootstrap:dashboard": "cd dashboard && npm install",
     "server": "cd server && npm run",
+    "dashboard": "cd dashboard && npm run",
     "test:server": "cd server && python -m pytest",
     "test:all": "npm run test:server"
   },

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Python server app",
   "scripts": {
-    "dev": "uvicorn main:app --reload",
+    "dev": "uvicorn main:app --reload --port 8000",
     "test": "pytest"
   },
   "author": "",
