@@ -99,3 +99,28 @@ async def delete_callback(callback_id: int,
     session.delete(callback)
     session.commit()
     return None
+
+
+@router.get("/{callback_id}/run", response_model=CallbackRead)
+async def run_callback(callback_id: int,
+                       user: User = Depends(get_current_user),
+                          session: Session = Depends(get_session)):
+    """Run Callback this method for run callback by id
+    flow -> user access /callbacks/{callback_id}/run with method post
+    check callback id is exist or not
+    check callback id is belong to user or not
+    subscribe topic based on callback path
+    change callback is_running to True
+    and return callback data
+    """
+    callback = session.query(Callback).filter(
+        Callback.id == callback_id, Callback.user_id == user.id).first()
+    if callback is None:
+        raise HTTPException(status_code=404, detail="Callback not found")
+    callback.is_running = True
+    # @TODO: subscribe topic based on callback path
+    session.add(callback)
+    session.commit()
+    session.refresh(callback)
+    return callback
+    

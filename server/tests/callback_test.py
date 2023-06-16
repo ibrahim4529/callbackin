@@ -276,4 +276,54 @@ def test_delete_callback_fail_callback_not_found(client, session, user, callback
     assert response.status_code == 404
     assert response.json() is not None
     assert response.json()['detail'] == "Callback not found"
+
+
+@pytest.mark.usefixtures("client","user" ,"session", "callback")
+def test_run_callback_success(client, user ,session, callback):
+    """Test run callback
+    1. Create dummy callback use fixtures
+    2. Call run callback endpoint
+    3. Assert if response is not None
+    4. Assert if response data is same as dummy callback
+    """
+    token = create_access_token(user.id)
+    client.headers['Authorization'] = f"Bearer {token}"
+    response = client.get(f"/callbacks/{callback.id}/run")
+    assert response.status_code == 200
+    assert response.json() is not None
+    assert response.json()['id'] == callback.id
+    assert response.json()['name'] == callback.name
+    assert response.json()['user_id'] == callback.user_id
+    assert response.json()['description'] == callback.description
+    assert response.json()['is_running'] == True
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_run_callback_fail_user_not_authenticated(client, session, user, callback):
+    """Test run callback
+    1. Create dummy callback use fixtures
+    2. Call run callback endpoint
+    3. Assert if throws 403
+    4. Assert if throws Not authenticated
+    """
+    response = client.get(f"/callbacks/{callback.id}/run")
+    assert response.status_code == 403
+    assert response.json() is not None
+    assert response.json()['detail'] == "Not authenticated"
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_run_callback_fail_callback_not_found(client, session, user, callback):
+    """Test run callback
+    1. Create dummy callback use fixtures
+    2. Call run callback endpoint with invalid id
+    3. Assert if throws 404
+    4. Assert if throws Callback not found
+    """
+    token = create_access_token(user.id)
+    client.headers['Authorization'] = f"Bearer {token}"
+    response = client.get(f"/callbacks/2/run")
+    assert response.status_code == 404
+    assert response.json() is not None
+    assert response.json()['detail'] == "Callback not found"
     
