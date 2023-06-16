@@ -16,7 +16,7 @@ class CallbackRead(_CallbackBase):
     id: int
     user_id: int
     is_running: bool
-    path: UUID4
+    path: str
 
 class CallbackUpdate(_CallbackBase):
     name: Optional[str]

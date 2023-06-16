@@ -60,9 +60,9 @@ async def get_callback(callback_id: int,
 
 @router.put("/{callback_id}", response_model=CallbackRead)
 async def update_callback(callback_id: int,
-                        request: CallbackUpdate,
-                        session: Session = Depends(get_session),
-                        user: User = Depends(get_current_user)):
+                          request: CallbackUpdate,
+                          session: Session = Depends(get_session),
+                          user: User = Depends(get_current_user)):
     """Update Callback this method for update callback by id
     flow -> user access /callbacks/{callback_id} with method put
     check callback id is exist or not
@@ -84,8 +84,8 @@ async def update_callback(callback_id: int,
 
 @router.delete("/{callback_id}", status_code=204)
 async def delete_callback(callback_id: int,
-                        user: User = Depends(get_current_user),
-                        session: Session = Depends(get_session)):
+                          user: User = Depends(get_current_user),
+                          session: Session = Depends(get_session)):
     """Delete Callback this method for delete callback by id
     flow -> user access /callbacks/{callback_id} with method delete
     check callback id is exist or not
@@ -104,7 +104,7 @@ async def delete_callback(callback_id: int,
 @router.get("/{callback_id}/run", response_model=CallbackRead)
 async def run_callback(callback_id: int,
                        user: User = Depends(get_current_user),
-                          session: Session = Depends(get_session)):
+                       session: Session = Depends(get_session)):
     """Run Callback this method for run callback by id
     flow -> user access /callbacks/{callback_id}/run with method post
     check callback id is exist or not
@@ -118,7 +118,29 @@ async def run_callback(callback_id: int,
     if callback is None:
         raise HTTPException(status_code=404, detail="Callback not found")
     callback.is_running = True
-    # @TODO: subscribe topic based on callback path
+    session.add(callback)
+    session.commit()
+    session.refresh(callback)
+    return callback
+
+
+@router.get("/{callback_id}/stop", response_model=CallbackRead)
+async def stop_callback(callback_id: int,
+                        user: User = Depends(get_current_user),
+                        session: Session = Depends(get_session)):
+    """Stop Callback this method for stop callback by id
+    flow -> user access /callbacks/{callback_id}/stop with method post
+    check callback id is exist or not
+    check callback id is belong to user or not
+    unsubscribe topic based on callback path
+    change callback is_running to False
+    and return callback data
+    """
+    callback = session.query(Callback).filter(
+        Callback.id == callback_id, Callback.user_id == user.id).first()
+    if callback is None:
+        raise HTTPException(status_code=404, detail="Callback not found")
+    callback.is_running = False
     session.add(callback)
     session.commit()
     session.refresh(callback)

@@ -57,4 +57,5 @@ def dummy_callback_fixture(session: Session, user: User):
     session.add(callback)
     session.commit()
     session.refresh(callback)
+    print(callback)
     return callback

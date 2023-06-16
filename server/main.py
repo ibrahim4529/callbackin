@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from routers import auth_router, callback_router
+from routers import auth_router, callback_router, handler_router
 from utils.db import create_db_and_tables
+from utils.mqtt import init_app
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -10,6 +11,7 @@ origins = [
 ]
 
 app = FastAPI()
+init_app(app)
 app.add_middleware(CORSMiddleware,
                    allow_origins=origins,
                    allow_credentials=True,
@@ -17,6 +19,7 @@ app.add_middleware(CORSMiddleware,
                    allow_headers=["*"])
 app.include_router(auth_router)
 app.include_router(callback_router)
+app.include_router(handler_router)
 
 
 @app.on_event("startup")
