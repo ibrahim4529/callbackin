@@ -1,18 +1,23 @@
 <script setup lang="ts">
-// import { useLocalStorage } from '@vueuse/core';
-import { useCookies } from '@vueuse/integrations/useCookies';
+import { useRouter } from 'vue-router';
 import axiosInstance from '../../utils/axios';
-const { set } = useCookies();
-const TOKEN = new URLSearchParams(window.location.search).get('token');
-set('token', TOKEN);
+import { Urls } from '../../utils/conts';
 
-const getUserName = async () => {
-    const response = await axiosInstance.get('/auth/me');
+const router = useRouter();
+const TOKEN = new URLSearchParams(window.location.search).get('token');
+
+localStorage.setItem('token', `${TOKEN}`);
+
+const getUserData = async () => {
+    const response = await axiosInstance.get(
+        Urls.ME
+    );
     return response.data
 };
 
-getUserName().then((data) => {
-    console.log(data);
+getUserData().then((data) => {
+    localStorage.setItem('userInfo', JSON.stringify(data));
+    router.push('/dashboard');
 });
 
 

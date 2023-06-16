@@ -12,13 +12,8 @@
     "@popperjs/core": "^2.11.8",
     "@vueuse/core": "^10.1.2",
     "@vueuse/head": "^1.1.26",
-    "@vueuse/integrations": "^10.1.2",
-    "async-validator": "^4.2.5",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
-    "change-case": "^4.1.2",
-    "drauu": "^0.3.2",
-    "universal-cookie": "^4.0.4",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2"
   },
