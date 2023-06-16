@@ -34,7 +34,6 @@ def client_fixture(session: Session):
 
 @pytest.fixture(name="user")
 def dummy_user_fixture(session: Session):
-    from models import User
     user = User(
         email="testuser@mail.com",
         password="password",

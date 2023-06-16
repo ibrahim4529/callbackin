@@ -3,7 +3,7 @@ from sqlmodel import Session
 from utils.db import get_session
 from utils.jwt import get_current_user
 from models import User, Callback
-from schemas.callback import CallbackCreate, CallbackRead
+from schemas.callback import CallbackCreate, CallbackRead, CallbackUpdate
 
 
 router = APIRouter(
@@ -56,3 +56,46 @@ async def get_callback(callback_id: int,
     if callback is None:
         raise HTTPException(status_code=404, detail="Callback not found")
     return callback
+
+
+@router.put("/{callback_id}", response_model=CallbackRead)
+async def update_callback(callback_id: int,
+                        request: CallbackUpdate,
+                        session: Session = Depends(get_session),
+                        user: User = Depends(get_current_user)):
+    """Update Callback this method for update callback by id
+    flow -> user access /callbacks/{callback_id} with method put
+    check callback id is exist or not
+    check callback id is belong to user or not
+    and update callback data
+    """
+    callback: Callback | None = session.query(Callback).filter(
+        Callback.id == callback_id, Callback.user_id == user.id).first()
+    if callback is None:
+        raise HTTPException(status_code=404, detail="Callback not found")
+    callback.name = request.name if request.name else callback.name
+    callback.description = request.description if request.description else callback.description
+    callback.local_endpoint = request.local_endpoint if request.local_endpoint else callback.local_endpoint
+    session.add(callback)
+    session.commit()
+    session.refresh(callback)
+    return callback
+
+
+@router.delete("/{callback_id}", status_code=204)
+async def delete_callback(callback_id: int,
+                        user: User = Depends(get_current_user),
+                        session: Session = Depends(get_session)):
+    """Delete Callback this method for delete callback by id
+    flow -> user access /callbacks/{callback_id} with method delete
+    check callback id is exist or not
+    check callback id is belong to user or not
+    and delete callback data
+    """
+    callback = session.query(Callback).filter(
+        Callback.id == callback_id, Callback.user_id == user.id).first()
+    if callback is None:
+        raise HTTPException(status_code=404, detail="Callback not found")
+    session.delete(callback)
+    session.commit()
+    return None

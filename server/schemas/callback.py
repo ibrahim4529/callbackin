@@ -5,6 +5,7 @@ from typing import Optional
 class _CallbackBase(BaseModel):
     name: str
     description: Optional[str]
+    local_endpoint: str
 
 
 class CallbackCreate(_CallbackBase):
@@ -16,4 +17,8 @@ class CallbackRead(_CallbackBase):
     user_id: int
     is_running: bool
     path: UUID4
-    local_endpoint: str
+
+class CallbackUpdate(_CallbackBase):
+    name: Optional[str]
+    description: Optional[str]
+    local_endpoint: Optional[str]

@@ -167,3 +167,113 @@ def test_get_callback_fail_callback_not_found(client: TestClient,
     assert response.status_code == 404
     assert response.json() is not None
     assert response.json()['detail'] == "Callback not found"
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_edit_callback_success(client, session, user, callback):
+    """Test edit callback
+    1. Create dummy callback use fixtures
+    2. Call edit callback endpoint
+    3. Assert if response is not None
+    4. Assert if response data is same as dummy callback
+    """
+    data_callback = {
+        "name": "Test 2",
+        "description": "Test 2",
+        "local_endpoint": "http://localhost:8000/edited/path",
+    }
+    token = create_access_token(user.id)
+    client.headers['Authorization'] = f"Bearer {token}"
+    response = client.put(f"/callbacks/{callback.id}", json=data_callback)
+    assert response.status_code == 200
+    assert response.json() is not None
+    assert response.json()['id'] == callback.id
+    assert response.json()['name'] == "Test 2"
+    assert response.json()['user_id'] == user.id
+    assert response.json()['description'] == "Test 2"
+    assert response.json()['is_running'] == callback.is_running
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_edit_callback_fail_user_not_authenticated(client, session, user, callback):
+    """Test edit callback
+    1. Create dummy callback use fixtures
+    2. Call edit callback endpoint
+    3. Assert if throws 403
+    4. Assert if throws Not authenticated
+    """
+    data_callback = {
+        "name": "Test 2",
+        "description": "Test 2",
+        "local_endpoint": "http://localhost:8000/edited/path",
+    }
+    response = client.put(f"/callbacks/{callback.id}", json=data_callback)
+    assert response.status_code == 403
+    assert response.json() is not None
+    assert response.json()['detail'] == "Not authenticated"
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_edit_callback_fail_callback_not_found(client, session, user, callback):
+    """Test edit callback
+    1. Create dummy callback use fixtures
+    2. Call edit callback endpoint with invalid id
+    3. Assert if throws 404
+    4. Assert if throws Callback not found
+    """
+    data_callback = {
+        "name": "Test 2",
+        "description": "Test 2",
+        "local_endpoint": "http://localhost:8000/edited/path",
+    }
+    token = create_access_token(user.id)
+    client.headers['Authorization'] = f"Bearer {token}"
+    response = client.put(f"/callbacks/2", json=data_callback)
+    assert response.status_code == 404
+    assert response.json() is not None
+    assert response.json()['detail'] == "Callback not found"
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_delete_callback_success(client, session, user, callback):
+    """Test delete callback
+    1. Create dummy callback use fixtures
+    2. Call delete callback endpoint
+    3. Assert if response is not None
+    4. Assert if response data is same as dummy callback
+    """
+    token = create_access_token(user.id)
+    client.headers['Authorization'] = f"Bearer {token}"
+    response = client.delete(f"/callbacks/{callback.id}")
+    assert response.status_code == 204
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_delete_callback_fail_user_not_authenticated(client, session, user, callback):
+    """Test delete callback
+    1. Create dummy callback use fixtures
+    2. Call delete callback endpoint
+    3. Assert if throws 403
+    4. Assert if throws Not authenticated
+    """
+    response = client.delete(f"/callbacks/{callback.id}")
+    assert response.status_code == 403
+    assert response.json() is not None
+    assert response.json()['detail'] == "Not authenticated"
+
+
+@pytest.mark.usefixtures("client", "session", "user", "callback")
+def test_delete_callback_fail_callback_not_found(client, session, user, callback):
+    """Test delete callback
+    1. Create dummy callback use fixtures
+    2. Call delete callback endpoint with invalid id
+    3. Assert if throws 404
+    4. Assert if throws Callback not found
+    """
+    token = create_access_token(user.id)
+    client.headers['Authorization'] = f"Bearer {token}"
+    response = client.delete(f"/callbacks/2")
+    assert response.status_code == 404
+    assert response.json() is not None
+    assert response.json()['detail'] == "Callback not found"
+    
