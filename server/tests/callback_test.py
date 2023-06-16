@@ -19,6 +19,7 @@ def test_create_callback_sucess(client: TestClient,
     data_callback = {
         "name": "Test",
         "description": "Test",
+        "local_endpoint": "http://localhost:8000/callbacks/1"
     }
     token = create_access_token(user.id)
     client.headers['Authorization'] = f"Bearer {token}"

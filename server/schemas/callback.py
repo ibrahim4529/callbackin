@@ -16,3 +16,4 @@ class CallbackRead(_CallbackBase):
     user_id: int
     is_running: bool
     path: UUID4
+    local_endpoint: str

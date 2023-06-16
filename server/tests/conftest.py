@@ -52,7 +52,8 @@ def dummy_callback_fixture(session: Session, user: User):
     callback = Callback(
         name="Test",
         description="Test",
-        user_id=user.id
+        user_id=user.id,
+        local_endpoint="http://localhost:8000/callbacks/1"
     )
     session.add(callback)
     session.commit()
