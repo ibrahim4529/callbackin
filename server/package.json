@@ -4,7 +4,7 @@
   "description": "Python server app",
   "scripts": {
     "dev": "uvicorn main:app --reload --port 8000",
-    "test": "IS_TEST=1 pytest"
+    "test": "TESTING=1 pytest"
   },
   "author": "",
   "license": "ISC"

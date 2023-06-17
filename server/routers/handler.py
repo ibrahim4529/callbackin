@@ -7,7 +7,7 @@ import json
 from utils.mqtt import publish_message
 import os
 
-IS_TEST = os.getenv("IS_TEST", 0)
+TESTING = os.getenv("TESTING", 0)
 
 
 router = APIRouter(
@@ -30,29 +30,28 @@ async def _handle(request: Request, path: str, session: Session ):
     callback = session.query(Callback).filter(Callback.path == path).first()
     request_body = (await request.body()).decode("utf-8")
     request_header = format_header(request.headers)
-    print(request_body)
-    print(request_header)
     if callback is None:
         return {
             "body": request_body,
             "header": request_header,
-            "message": "Callback not found"
+            "message": "Callback not found",
+            "method": request.method,
         }
     
     callback_history = CallbackHistory(
         callback_id=callback.id,
         body=request_body,
         headers=request_header,
+        method=request.method,
         timestamp=datetime.datetime.now()
     )
 
     message = {
         "body": request_body,
-        "header": request_header
+        "header": request_header,
+        "method": request.method,
     }
-    
-    
-    if IS_TEST:
+    if not TESTING:
         publish_message(callback.path, json.dumps(message))
 
     session.add(callback_history)

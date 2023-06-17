@@ -13,3 +13,4 @@ class CallbackHistory(SQLModel, table=True):
     timestamp: datetime = Field(default=None)
     headers: str = Field(default=None)
     body: str = Field(default=None)
+    method: str = Field(default=None)

@@ -5,7 +5,6 @@
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
 
     "runItOn": {
-        
         "commands": [
             {
                 "match": ".*\\.py",
