@@ -33,3 +33,6 @@ Callbackin is a simple solution that allows you to forward requests from a publi
 ## How it works
 Callbackin utilizes a public server to forward requests from a public URL to a local server. It achieves this by generating a unique public URL using a UUID. When a request is sent to the public URL, the server forwards the request to the associated local server using MQTT (Message Queuing Telemetry Transport).
 The Callbackin CLI (Command-Line Interface) is used to create callbacks and listen for MQTT messages. When a request is received, the server sends an MQTT message to the CLI. The CLI then forwards the request to the local server for processing.
+
+## Diagram
+![Diagram](docs/diagram.png)
