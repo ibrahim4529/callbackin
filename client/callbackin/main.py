@@ -49,9 +49,7 @@ def create_callback():
         "description": description,
     })
     if response.status_code == 200:
-        print(response.json())
         callback = Callback(**response.json())
-        typer.echo(f"Callback created successfully with ID {callback.id}")
         typer.echo(f"Using This URL to use your endpoint: {BASE_URL}/handle/{callback.path}")
     else:
         typer.echo("Error creating callback")

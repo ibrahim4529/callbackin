@@ -32,19 +32,24 @@ class CallbackHanler:
                 body = json.loads(request_data["body"])
             
             typer.echo(f"Fowarding request to -> [{method}] {self.callback.local_endpoint}")
-            match method:
-                case "GET":
-                    response = requests.get(self.callback.local_endpoint, headers=headers)
-                case "POST":
-                    response = requests.post(self.callback.local_endpoint, data=body, headers=headers)
-                case "PUT":
-                    response = requests.put(self.callback.local_endpoint, data=body, headers=headers)
+            try:
+                match method:
+                    case "GET":
+                        response = requests.get(self.callback.local_endpoint, headers=headers)
+                    case "POST":
+                        response = requests.post(self.callback.local_endpoint, data=body, headers=headers)
+                    case "PUT":
+                        response = requests.put(self.callback.local_endpoint, data=body, headers=headers)
+            except Exception as e:
+                typer.echo(f"Error when fowarding request to {self.callback.local_endpoint}")
+                typer.echo(e)
+                return
             typer.echo(f"Response from {self.callback.local_endpoint} -> {response.status_code}")
 
     def run(self):
         typer.echo(f"Running callback {self.callback.name} -> {self.callback.local_endpoint}")
         mqtt_config = get_mqtt_config()
-        self.client.connect(mqtt_config["host"], mqtt_config["port"], 60)
+        self.client.connect(mqtt_config["host"], int(mqtt_config["port"]), 60)
         self.client.loop_forever()
 
 
