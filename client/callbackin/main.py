@@ -22,7 +22,7 @@ def login():
 
 @app.command()
 def init():
-    base_url = typer.prompt("Callbackin server URL", default="https://callbackin.my.id")
+    base_url = typer.prompt("Callbackin server URL", default="https://api.callbackin.my.id")
     mqtt_host =  typer.prompt("MQTT broker URL", default="test.mosquitto.org")
     mqtt_port = typer.prompt("MQTT broker port", default="1883")
     mqtt_user = typer.prompt("MQTT broker username", default="")
