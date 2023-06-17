@@ -1,0 +1,23 @@
+version: '3.8'
+
+networks:
+  api_gateway:
+    name: api_gateway
+
+services:
+  callbackin-server:
+    networks:
+      - api_gateway
+    image: callbackin-server:latest
+    container_name: callbackin-server
+    build:
+      context: .
+      dockerfile: deployment/server/Dockerfile
+    ports:
+      - 9191:9191
+    volumes:
+      - ./server:/app
+    env_file:
+      - server/.env
+    command: |
+      uvicorn main:app --host 0.0.0.0 --port 9191
