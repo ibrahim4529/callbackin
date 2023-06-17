@@ -8,8 +8,8 @@
     "bootstrap:dashboard": "cd dashboard && npm install",
     "server": "cd server && npm run",
     "dashboard": "cd dashboard && npm run",
-    "test:server": "cd server && python -m pytest",
-    "test:all": "npm run test:server"
+    "test:server": "npm run server test",
+    "test:all": "TESTING=1 npm run test:server"
   },
   "author": "",
   "license": "ISC"
