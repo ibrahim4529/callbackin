@@ -13,7 +13,7 @@ const isAuthed = () => {
     return !!token.value
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
     if (to.path === '/login' && isAuthed()) {
         next({ path: '/dashboard' })
     }

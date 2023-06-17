@@ -4,7 +4,7 @@ import { Urls } from '../../utils/conts';
 </script>
 
 <template>
-    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="w-full h-screen justify-center items-center flex">
         <a class="btn btn-primary btn-lg" type="button" :href="Urls.LOGIN">
             Login with Github
             <Icon icon="akar-icons:github-fill" class="icon" />

@@ -1,7 +1,10 @@
 
 <script setup lang="ts">
-import Button from '../components/button.vue';
+import { Icon } from '@iconify/vue/dist/iconify.js';
+
 </script>
 <template>
-    <Button text="Hello" icon="mdi:home" />
+    <button class="btn btn-primary">Hallo
+        <Icon icon="mdi:home" />
+    </button>
 </template>
