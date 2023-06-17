@@ -4,7 +4,7 @@ from callbackin.handler.login import LoginHandler
 from pathlib import Path
 from callbackin.schemas.callback import Callback
 from callbackin.utils.config import create_config, CONFIG_FILE, get_config, is_authenticated
-from callbackin.utils.request import post, get, delete, put
+from callbackin.utils.request import post, get, delete, put, BASE_URL
 from rich.table import Table
 from rich.console import Console
 
@@ -52,8 +52,7 @@ def create_callback():
         print(response.json())
         callback = Callback(**response.json())
         typer.echo(f"Callback created successfully with ID {callback.id}")
-        typer.echo(f"Callback path: {callback.path}")
-        typer.echo("Callback created successfully")
+        typer.echo(f"Using This URL to use your endpoint: {BASE_URL}/handle/{callback.path}")
     else:
         typer.echo("Error creating callback")
 
@@ -63,9 +62,13 @@ def list_callbacks():
     response = get("/callbacks")
     if response.status_code == 200:
         callbacks = response.json()
-        table = Table("ID", "Name", "Local Endpoint")
+        table = Table("ID", "Name", "Local Endpoint", "Server Endpoint")
         for callback in callbacks:
-            table.add_row(str(callback["id"]), callback["name"], callback["local_endpoint"])
+            table.add_row(str(callback["id"]), 
+                          callback["name"], 
+                          callback["local_endpoint"],
+                          f"{BASE_URL}/handle/{callback['path']}"
+                          )
         console = Console()
         console.print(table)
 
