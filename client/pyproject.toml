@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "callbackin"
+version = "0.2.0"
+description = ""
+authors = ["ibrahim4529 <ibrahim.hanif4529@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.9.0"}
+requests = "^2.31.0"
+rich = "^13.4.2"
+paho-mqtt = "^1.6.1"
+
+[tool.poetry.scripts]
+callbackin = "callbackin.main:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
