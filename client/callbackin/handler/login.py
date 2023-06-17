@@ -24,7 +24,7 @@ class CallbackHandler(BaseHTTPRequestHandler):
             # Store the token in the class variable
             CallbackHandler.token = token
 
-            self.wfile.write(b'Callback received! Token stored.')
+            self.wfile.write(b'Login successfully, you can close this tab now')
             return
     
     @staticmethod
