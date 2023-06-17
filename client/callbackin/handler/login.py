@@ -3,7 +3,7 @@ import threading
 import webbrowser
 import typer
 from callbackin.utils.config import is_authenticated, get_config, CONFIG_FILE
-
+from callbackin.utils.request import BASE_URL
 
 class CallbackHandler(BaseHTTPRequestHandler):
     token = None
@@ -42,7 +42,7 @@ class LoginHandler:
         if not is_authenticated():
             self.server_thread.start()
             typer.echo("Login to GitHub")
-            webbrowser.open('http://localhost:8000/auth/github/login/cli')
+            webbrowser.open(f'{BASE_URL}/auth/github/login/cli')
             while CallbackHandler.get_token() is None:
                 pass
             typer.echo("Login successful")
