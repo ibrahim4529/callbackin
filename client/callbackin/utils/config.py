@@ -7,6 +7,14 @@ CONFIG_FILE = CONFIG_DIR / "config.ini"
 
 
 def get_config() -> configparser.ConfigParser:
+    if not CONFIG_FILE.exists():
+        create_config(
+            typer.prompt("Base URL"),
+            typer.prompt("MQTT Host"),
+            typer.prompt("MQTT Port"),
+            typer.prompt("MQTT Username"),
+            typer.prompt("MQTT Password", hide_input=True),
+        )
     config = configparser.ConfigParser()
     config.read(CONFIG_FILE)
     return config

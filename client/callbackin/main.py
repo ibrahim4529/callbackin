@@ -4,7 +4,7 @@ from callbackin.handler.login import LoginHandler
 from pathlib import Path
 from callbackin.schemas.callback import Callback
 from callbackin.utils.config import create_config, CONFIG_FILE, get_config, is_authenticated
-from callbackin.utils.request import post, get, delete, put, BASE_URL
+from callbackin.utils.request import post, get, delete, put, get_base_url
 from rich.table import Table
 from rich.console import Console
 
@@ -65,7 +65,7 @@ def list_callbacks():
             table.add_row(str(callback["id"]), 
                           callback["name"], 
                           callback["local_endpoint"],
-                          f"{BASE_URL}/handle/{callback['path']}"
+                          f"{get_base_url()}/handle/{callback['path']}"
                           )
         console = Console()
         console.print(table)

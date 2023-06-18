@@ -1,11 +1,18 @@
 import requests
 from callbackin.utils.config import get_config
 
-config = get_config()
-BASE_URL = config["DEFAULT"]["base_url"]
+
+
+def get_base_url() -> str:
+    config = get_config()
+    if config["DEFAULT"]["base_url"] == "":
+        raise Exception(
+            "Base URL is not set, please run callbackin init")
+    return config["DEFAULT"]["base_url"]
 
 
 def get_token() -> str:
+    config = get_config()
     if config["DEFAULT"]["user_token"] == "":
         raise Exception(
             "You are not authenticated, please login first, using callbackin login")
@@ -21,7 +28,7 @@ def get(path: str, params={}):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    return requests.get(BASE_URL + path, headers=headers, params=params)
+    return requests.get(get_base_url() + path, headers=headers, params=params)
 
 
 def post(path: str, data={}):
@@ -33,7 +40,7 @@ def post(path: str, data={}):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    return requests.post(BASE_URL + path, headers=headers, json=data)
+    return requests.post(get_base_url() + path, headers=headers, json=data)
 
 
 def delete(path: str):
@@ -44,7 +51,7 @@ def delete(path: str):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    return requests.delete(BASE_URL + path, headers=headers)
+    return requests.delete(get_base_url() + path, headers=headers)
 
 
 def put(path: str, data={}):
@@ -56,4 +63,4 @@ def put(path: str, data={}):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    return requests.put(BASE_URL + path, headers=headers, json=data)
+    return requests.put(get_base_url() + path, headers=headers, json=data)
