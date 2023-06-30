@@ -1,0 +1,45 @@
+name: Deploy Server PROD App to VPS
+
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - 'server/**'
+  workflow_dispatch:
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Set server .env file
+        run: 'echo "$TEST_ENV" > server-app/.env'
+        shell: bash
+        env:
+          TEST_ENV: ${{ secrets.TEST_ENV }}
+      - name: Bootstraping Projects
+        run: npm run bootstrap:server
+      - name: Test server-app
+        run: npm run test:server
+      - name: Deploy server-app to VPS
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+          PROD_ENV: ${{ secrets.PROD_ENV }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: PROD_ENV
+          script: |
+            cd /home/ibrahim4529/cilo
+            git pull
+            echo "$PROD_ENV" > ./server-app/.env
+            docker-compose -f docker-compose.yaml up -d --build
