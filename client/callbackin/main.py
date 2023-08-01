@@ -51,6 +51,7 @@ def create_callback():
     if response.status_code == 200:
         callback = Callback(**response.json())
         typer.echo(f"Using This URL to use your endpoint: {get_base_url()}/handle/{callback.path}")
+        typer.echo(f"Start callback with this command: callbackin run {callback.id}")
     else:
         typer.echo("Error creating callback")
 
