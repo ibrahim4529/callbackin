@@ -4,8 +4,8 @@
 Callbackin is a simple solution that allows you to forward requests from a public URL to a local server. It is particularly useful for testing webhooks and other services that require a public URL to receive requests.
 
 ## Usage
-1. Install the `callbackin` package globally using pip: `pip install callbackin`.
-2. Initialize Callbackin by running the command: `callbackin init`.
+1. Install the `callbackin` package globally using pip: `pip install callbackin` or `pip3 install callbackin`.
+2. Initialize Callbackin by running the command: `callbackin init` just fill with default value.
 3. Login to Callbackin using GitHub by running the command: `callbackin login`.
 4. Create a new callback by running the command: `callbackin create`, and provide the necessary details:
    ```bash
@@ -18,6 +18,7 @@ Callbackin is a simple solution that allows you to forward requests from a publi
    ```
    Creating callback Callback 2 for http://localhost:8000/handle-error
    Using This URL to use your endpoint: https://api.callbackin.my.id/handle/2b4edbf0-3c71-473c-97ad-1c34978ca7f9
+   Start callback with this command: callbackin run 10
    ```
    Copy the generated URL and use it as the destination for your requests.
 5. List all created callbacks by running the command: `callbackin list`.
